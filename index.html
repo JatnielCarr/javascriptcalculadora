@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API de Cálculo de Áreas y Volúmenes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .result h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .result pre {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 14px;
+        }
+
+        .error {
+            background: #f8d7da;
+            border-left-color: #dc3545;
+            color: #721c24;
+        }
+
+        .success {
+            background: #d4edda;
+            border-left-color: #28a745;
+            color: #155724;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .info-card {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .info-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .info-card ul {
+            list-style: none;
+        }
+
+        .info-card li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .info-card li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧮 API de Cálculo Geométrico</h1>
+            <p>Calcula áreas, perímetros y volúmenes de figuras geométricas</p>
+        </div>
+
+        <div class="grid">
+            <div class="info-card">
+                <h3>📐 Áreas</h3>
+                <ul>
+                    <li>Cuadrado</li>
+                    <li>Rectángulo</li>
+                    <li>Círculo</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>📏 Perímetros</h3>
+                <ul>
+                    <li>Cuadrado</li>
+                    <li>Rectángulo</li>
+                    <li>Círculo</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>📦 Volúmenes</h3>
+                <ul>
+                    <li>Cubo</li>
+                    <li>Esfera</li>
+                    <li>Cilindro</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🔢 Calculadora de Áreas</h2>
+            
+            <div class="form-group">
+                <label for="figuraArea">Selecciona la figura:</label>
+                <select id="figuraArea" class="form-control">
+                    <option value="cuadrado">Cuadrado</option>
+                    <option value="rectangulo">Rectángulo</option>
+                    <option value="circulo">Círculo</option>
+                </select>
+            </div>
+
+            <div id="parametrosArea"></div>
+
+            <button class="btn" onclick="calcularArea()">Calcular Área</button>
+            <div id="resultadoArea" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="card">
+            <h2>📏 Calculadora de Perímetros</h2>
+            
+            <div class="form-group">
+                <label for="figuraPerimetro">Selecciona la figura:</label>
+                <select id="figuraPerimetro" class="form-control">
+                    <option value="cuadrado">Cuadrado</option>
+                    <option value="rectangulo">Rectángulo</option>
+                    <option value="circulo">Círculo</option>
+                </select>
+            </div>
+
+            <div id="parametrosPerimetro"></div>
+
+            <button class="btn" onclick="calcularPerimetro()">Calcular Perímetro</button>
+            <div id="resultadoPerimetro" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="card">
+            <h2>📦 Calculadora de Volúmenes</h2>
+            
+            <div class="form-group">
+                <label for="figuraVolumen">Selecciona el cuerpo:</label>
+                <select id="figuraVolumen" class="form-control">
+                    <option value="cubo">Cubo</option>
+                    <option value="esfera">Esfera</option>
+                    <option value="cilindro">Cilindro</option>
+                </select>
+            </div>
+
+            <div id="parametrosVolumen"></div>
+
+            <button class="btn" onclick="calcularVolumen()">Calcular Volumen</button>
+            <div id="resultadoVolumen" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="card">
+            <h2>🧪 Ejemplos de Uso</h2>
+            <button class="btn" onclick="ejecutarEjemplos()">Ejecutar Ejemplos</button>
+            <div id="resultadoEjemplos" class="result" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3000';
+
+        // Configurar parámetros según la figura seleccionada
+        function configurarParametros(tipo, figuraId, parametrosId) {
+            const figura = document.getElementById(figuraId).value;
+            const parametrosDiv = document.getElementById(parametrosId);
+            
+            let html = '';
+            
+            switch(figura) {
+                case 'cuadrado':
+                    html = `
+                        <div class="form-group">
+                            <label for="lado">Lado:</label>
+                            <input type="number" id="lado" step="0.01" placeholder="Ingresa el lado">
+                        </div>
+                    `;
+                    break;
+                case 'rectangulo':
+                    html = `
+                        <div class="form-group">
+                            <label for="base">Base:</label>
+                            <input type="number" id="base" step="0.01" placeholder="Ingresa la base">
+                        </div>
+                        <div class="form-group">
+                            <label for="altura">Altura:</label>
+                            <input type="number" id="altura" step="0.01" placeholder="Ingresa la altura">
+                        </div>
+                    `;
+                    break;
+                case 'circulo':
+                    html = `
+                        <div class="form-group">
+                            <label for="radio">Radio:</label>
+                            <input type="number" id="radio" step="0.01" placeholder="Ingresa el radio">
+                        </div>
+                    `;
+                    break;
+                case 'cubo':
+                    html = `
+                        <div class="form-group">
+                            <label for="ladoCubo">Lado:</label>
+                            <input type="number" id="ladoCubo" step="0.01" placeholder="Ingresa el lado">
+                        </div>
+                    `;
+                    break;
+                case 'esfera':
+                    html = `
+                        <div class="form-group">
+                            <label for="radioEsfera">Radio:</label>
+                            <input type="number" id="radioEsfera" step="0.01" placeholder="Ingresa el radio">
+                        </div>
+                    `;
+                    break;
+                case 'cilindro':
+                    html = `
+                        <div class="form-group">
+                            <label for="radioCilindro">Radio:</label>
+                            <input type="number" id="radioCilindro" step="0.01" placeholder="Ingresa el radio">
+                        </div>
+                        <div class="form-group">
+                            <label for="alturaCilindro">Altura:</label>
+                            <input type="number" id="alturaCilindro" step="0.01" placeholder="Ingresa la altura">
+                        </div>
+                    `;
+                    break;
+            }
+            
+            parametrosDiv.innerHTML = html;
+        }
+
+        // Función para hacer peticiones a la API
+        async function hacerPeticion(endpoint) {
+            try {
+                const response = await fetch(`${API_BASE}${endpoint}`);
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(`Error ${response.status}: ${data.error || data.mensaje}`);
+                }
+                
+                return data;
+            } catch (error) {
+                throw new Error(`Error de conexión: ${error.message}`);
+            }
+        }
+
+        // Calcular área
+        async function calcularArea() {
+            const figura = document.getElementById('figuraArea').value;
+            const resultadoDiv = document.getElementById('resultadoArea');
+            
+            try {
+                let endpoint = '';
+                let parametros = '';
+                
+                switch(figura) {
+                    case 'cuadrado':
+                        const lado = document.getElementById('lado').value;
+                        if (!lado) throw new Error('Ingresa el lado del cuadrado');
+                        endpoint = `/api/Geometria/area/cuadrado?lado=${lado}`;
+                        break;
+                    case 'rectangulo':
+                        const base = document.getElementById('base').value;
+                        const altura = document.getElementById('altura').value;
+                        if (!base || !altura) throw new Error('Ingresa la base y altura del rectángulo');
+                        endpoint = `/api/Geometria/area/rectangulo?base=${base}&altura=${altura}`;
+                        break;
+                    case 'circulo':
+                        const radio = document.getElementById('radio').value;
+                        if (!radio) throw new Error('Ingresa el radio del círculo');
+                        endpoint = `/api/Geometria/area/circulo?radio=${radio}`;
+                        break;
+                }
+                
+                const resultado = await hacerPeticion(endpoint);
+                mostrarResultado(resultadoDiv, resultado, 'success');
+                
+            } catch (error) {
+                mostrarResultado(resultadoDiv, { error: error.message }, 'error');
+            }
+        }
+
+        // Calcular perímetro
+        async function calcularPerimetro() {
+            const figura = document.getElementById('figuraPerimetro').value;
+            const resultadoDiv = document.getElementById('resultadoPerimetro');
+            
+            try {
+                let endpoint = '';
+                
+                switch(figura) {
+                    case 'cuadrado':
+                        const lado = document.getElementById('lado').value;
+                        if (!lado) throw new Error('Ingresa el lado del cuadrado');
+                        endpoint = `/api/Geometria/perimetro/cuadrado?lado=${lado}`;
+                        break;
+                    case 'rectangulo':
+                        const base = document.getElementById('base').value;
+                        const altura = document.getElementById('altura').value;
+                        if (!base || !altura) throw new Error('Ingresa la base y altura del rectángulo');
+                        endpoint = `/api/Geometria/perimetro/rectangulo?base=${base}&altura=${altura}`;
+                        break;
+                    case 'circulo':
+                        const radio = document.getElementById('radio').value;
+                        if (!radio) throw new Error('Ingresa el radio del círculo');
+                        endpoint = `/api/Geometria/perimetro/circulo?radio=${radio}`;
+                        break;
+                }
+                
+                const resultado = await hacerPeticion(endpoint);
+                mostrarResultado(resultadoDiv, resultado, 'success');
+                
+            } catch (error) {
+                mostrarResultado(resultadoDiv, { error: error.message }, 'error');
+            }
+        }
+
+        // Calcular volumen
+        async function calcularVolumen() {
+            const figura = document.getElementById('figuraVolumen').value;
+            const resultadoDiv = document.getElementById('resultadoVolumen');
+            
+            try {
+                let endpoint = '';
+                
+                switch(figura) {
+                    case 'cubo':
+                        const ladoCubo = document.getElementById('ladoCubo').value;
+                        if (!ladoCubo) throw new Error('Ingresa el lado del cubo');
+                        endpoint = `/api/Geometria/volumen/cubo?lado=${ladoCubo}`;
+                        break;
+                    case 'esfera':
+                        const radioEsfera = document.getElementById('radioEsfera').value;
+                        if (!radioEsfera) throw new Error('Ingresa el radio de la esfera');
+                        endpoint = `/api/Geometria/volumen/esfera?radio=${radioEsfera}`;
+                        break;
+                    case 'cilindro':
+                        const radioCilindro = document.getElementById('radioCilindro').value;
+                        const alturaCilindro = document.getElementById('alturaCilindro').value;
+                        if (!radioCilindro || !alturaCilindro) throw new Error('Ingresa el radio y altura del cilindro');
+                        endpoint = `/api/Geometria/volumen/cilindro?radio=${radioCilindro}&altura=${alturaCilindro}`;
+                        break;
+                }
+                
+                const resultado = await hacerPeticion(endpoint);
+                mostrarResultado(resultadoDiv, resultado, 'success');
+                
+            } catch (error) {
+                mostrarResultado(resultadoDiv, { error: error.message }, 'error');
+            }
+        }
+
+        // Mostrar resultado
+        function mostrarResultado(div, data, tipo) {
+            div.style.display = 'block';
+            div.className = `result ${tipo}`;
+            
+            if (tipo === 'error') {
+                div.innerHTML = `
+                    <h3>❌ Error</h3>
+                    <p>${data.error}</p>
+                `;
+            } else {
+                div.innerHTML = `
+                    <h3>✅ Resultado</h3>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            }
+        }
+
+        // Ejecutar ejemplos
+        async function ejecutarEjemplos() {
+            const resultadoDiv = document.getElementById('resultadoEjemplos');
+            resultadoDiv.style.display = 'block';
+            resultadoDiv.className = 'result';
+            resultadoDiv.innerHTML = '<h3>🔄 Ejecutando ejemplos...</h3>';
+            
+            try {
+                // Verificar conexión
+                const info = await hacerPeticion('/');
+                
+                // Ejemplos básicos
+                const ejemplos = [
+                    { nombre: 'Área del cuadrado (lado=5)', endpoint: '/api/Geometria/area/cuadrado?lado=5' },
+                    { nombre: 'Área del rectángulo (4x6)', endpoint: '/api/Geometria/area/rectangulo?base=4&altura=6' },
+                    { nombre: 'Área del círculo (radio=3)', endpoint: '/api/Geometria/area/circulo?radio=3' },
+                    { nombre: 'Volumen del cubo (lado=3)', endpoint: '/api/Geometria/volumen/cubo?lado=3' },
+                    { nombre: 'Volumen de la esfera (radio=2)', endpoint: '/api/Geometria/volumen/esfera?radio=2' }
+                ];
+                
+                let resultados = [];
+                
+                for (const ejemplo of ejemplos) {
+                    try {
+                        const resultado = await hacerPeticion(ejemplo.endpoint);
+                        resultados.push(`✅ ${ejemplo.nombre}: ${JSON.stringify(resultado)}`);
+                    } catch (error) {
+                        resultados.push(`❌ ${ejemplo.nombre}: ${error.message}`);
+                    }
+                }
+                
+                resultadoDiv.innerHTML = `
+                    <h3>✅ Ejemplos Completados</h3>
+                    <pre>${resultados.join('\n\n')}</pre>
+                `;
+                
+            } catch (error) {
+                resultadoDiv.className = 'result error';
+                resultadoDiv.innerHTML = `
+                    <h3>❌ Error</h3>
+                    <p>No se pudo conectar al servidor: ${error.message}</p>
+                    <p>Asegúrate de que el servidor esté ejecutándose en http://localhost:3000</p>
+                `;
+            }
+        }
+
+        // Event listeners
+        document.getElementById('figuraArea').addEventListener('change', () => {
+            configurarParametros('area', 'figuraArea', 'parametrosArea');
+        });
+
+        document.getElementById('figuraPerimetro').addEventListener('change', () => {
+            configurarParametros('perimetro', 'figuraPerimetro', 'parametrosPerimetro');
+        });
+
+        document.getElementById('figuraVolumen').addEventListener('change', () => {
+            configurarParametros('volumen', 'figuraVolumen', 'parametrosVolumen');
+        });
+
+        // Inicializar
+        configurarParametros('area', 'figuraArea', 'parametrosArea');
+        configurarParametros('perimetro', 'figuraPerimetro', 'parametrosPerimetro');
+        configurarParametros('volumen', 'figuraVolumen', 'parametrosVolumen');
+    </script>
+</body>
+</html> 
