@@ -113,13 +113,159 @@ app.get('/api/Geometria/area/rectangulo', validarParametro('base'), validarParam
 app.get('/api/Geometria/area/circulo', validarParametro('radio'), geometriaController.areaCirculo);
 
 // Rutas de perímetros
+/**
+ * @swagger
+ * /api/Geometria/perimetro/cuadrado:
+ *   get:
+ *     summary: Calcula el perímetro de un cuadrado
+ *     parameters:
+ *       - in: query
+ *         name: lado
+ *         required: true
+ *         schema:
+ *           type: number
+ *         description: Longitud del lado del cuadrado
+ *     responses:
+ *       200:
+ *         description: Perímetro calculado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 figura:
+ *                   type: string
+ *                 lado:
+ *                   type: number
+ *                 perimetro:
+ *                   type: number
+ *       400:
+ *         description: Parámetros inválidos
+ */
 app.get('/api/Geometria/perimetro/cuadrado', validarParametro('lado'), geometriaController.perimetroCuadrado);
+
+/**
+ * @swagger
+ * /api/Geometria/perimetro/rectangulo:
+ *   get:
+ *     summary: Calcula el perímetro de un rectángulo
+ *     parameters:
+ *       - in: query
+ *         name: base
+ *         required: true
+ *         schema:
+ *           type: number
+ *         description: Base del rectángulo
+ *       - in: query
+ *         name: altura
+ *         required: true
+ *         schema:
+ *           type: number
+ *         description: Altura del rectángulo
+ *     responses:
+ *       200:
+ *         description: Perímetro calculado exitosamente
+ *       400:
+ *         description: Parámetros inválidos
+ */
 app.get('/api/Geometria/perimetro/rectangulo', validarParametro('base'), validarParametro('altura'), geometriaController.perimetroRectangulo);
+
+/**
+ * @swagger
+ * /api/Geometria/perimetro/circulo:
+ *   get:
+ *     summary: Calcula el perímetro de un círculo
+ *     parameters:
+ *       - in: query
+ *         name: radio
+ *         required: true
+ *         schema:
+ *           type: number
+ *         description: Radio del círculo
+ *     responses:
+ *       200:
+ *         description: Perímetro calculado exitosamente
+ *       400:
+ *         description: Parámetros inválidos
+ */
 app.get('/api/Geometria/perimetro/circulo', validarParametro('radio'), geometriaController.perimetroCirculo);
 
 // Rutas de volúmenes
+/**
+ * @swagger
+ * /api/Geometria/volumen/cubo:
+ *   get:
+ *     summary: Calcula el volumen de un cubo
+ *     parameters:
+ *       - in: query
+ *         name: lado
+ *         required: true
+ *         schema:
+ *           type: number
+ *         description: Longitud del lado del cubo
+ *     responses:
+ *       200:
+ *         description: Volumen calculado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 figura:
+ *                   type: string
+ *                 lado:
+ *                   type: number
+ *                 volumen:
+ *                   type: number
+ *       400:
+ *         description: Parámetros inválidos
+ */
 app.get('/api/Geometria/volumen/cubo', validarParametro('lado'), geometriaController.volumenCubo);
+
+/**
+ * @swagger
+ * /api/Geometria/volumen/esfera:
+ *   get:
+ *     summary: Calcula el volumen de una esfera
+ *     parameters:
+ *       - in: query
+ *         name: radio
+ *         required: true
+ *         schema:
+ *           type: number
+ *         description: Radio de la esfera
+ *     responses:
+ *       200:
+ *         description: Volumen calculado exitosamente
+ *       400:
+ *         description: Parámetros inválidos
+ */
 app.get('/api/Geometria/volumen/esfera', validarParametro('radio'), geometriaController.volumenEsfera);
+
+/**
+ * @swagger
+ * /api/Geometria/volumen/cilindro:
+ *   get:
+ *     summary: Calcula el volumen de un cilindro
+ *     parameters:
+ *       - in: query
+ *         name: radio
+ *         required: true
+ *         schema:
+ *           type: number
+ *         description: Radio de la base del cilindro
+ *       - in: query
+ *         name: altura
+ *         required: true
+ *         schema:
+ *           type: number
+ *         description: Altura del cilindro
+ *     responses:
+ *       200:
+ *         description: Volumen calculado exitosamente
+ *       400:
+ *         description: Parámetros inválidos
+ */
 app.get('/api/Geometria/volumen/cilindro', validarParametro('radio'), validarParametro('altura'), geometriaController.volumenCilindro);
 
 // Endpoint de información de la API
